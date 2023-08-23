@@ -30,8 +30,6 @@ public class KafkaEmitter implements Emitter {
 
   public static final String DEFAULT_MCP_KAFKA_TOPIC = "MetadataChangeProposal_v1";
   private final KafkaEmitterConfig config;
-
-
   private final KafkaProducer<Object, Object> producer;
   private final Properties kafkaConfigProperties;
   private AvroSerializer _avroSerializer;
@@ -73,7 +71,7 @@ public class KafkaEmitter implements Emitter {
   @Override
   public Future<MetadataWriteResponse> emit(MetadataChangeProposal mcp, Callback datahubCallback) throws IOException {
     GenericRecord genricRecord = _avroSerializer.serialize(mcp);
-    ProducerRecord<Object, Object> record = new ProducerRecord<>(KafkaEmitter.DEFAULT_MCP_KAFKA_TOPIC,
+    ProducerRecord<Object, Object> record = new ProducerRecord<>(config.getMcpKafkaTopic(),
         mcp.getEntityUrn().toString(), genricRecord);
     org.apache.kafka.clients.producer.Callback callback = new org.apache.kafka.clients.producer.Callback() {
 
@@ -83,7 +81,7 @@ public class KafkaEmitter implements Emitter {
         datahubCallback.onCompletion(response);
       }
     };
-    log.debug("Emit: topic: {} \n record: {}", KafkaEmitter.DEFAULT_MCP_KAFKA_TOPIC, record);
+    log.debug("Emit: topic: {} \n record: {}", config.getMcpKafkaTopic(), record);
     Future<RecordMetadata> future = this.producer.send(record, callback);
     return mapFuture(future);
   }
