@@ -30,6 +30,8 @@ public class KafkaEmitter implements Emitter {
 
   public static final String DEFAULT_MCP_KAFKA_TOPIC = "MetadataChangeProposal_v1";
   private final KafkaEmitterConfig config;
+
+
   private final KafkaProducer<Object, Object> producer;
   private final Properties kafkaConfigProperties;
   private AvroSerializer _avroSerializer;
