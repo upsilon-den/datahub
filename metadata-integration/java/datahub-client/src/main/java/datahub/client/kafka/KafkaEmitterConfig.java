@@ -30,6 +30,9 @@ public class KafkaEmitterConfig {
   
   @Builder.Default
   private final EventFormatter eventFormatter = new EventFormatter(EventFormatter.Format.PEGASUS_JSON);
+
+  @Builder.Default
+  private final String mcpKafkaTopic = KafkaEmitter.DEFAULT_MCP_KAFKA_TOPIC;
   
   public static class KafkaEmitterConfigBuilder {
 
